@@ -51,5 +51,5 @@ class TestCase(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    #unittest.main()
-    print(sum_of_multiples([3,5],1000))
+    # unittest.main()
+    print(sum_of_multiples([3, 5], 1000))

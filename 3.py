@@ -3,7 +3,7 @@ import unittest
 
 class TestCase(unittest.TestCase):
     def test_all(self):
-        cases = []
+        cases = [(2, 2), (9, 3), (391, 23)]
         for case, outcome in cases:
             self.assertEqual(solution(case), outcome)
         return
@@ -43,11 +43,18 @@ every factor you find, divide remainder by all factors
 """
 
 
-def solution():
-
-    return
+def solution(n):
+    stack = []
+    f = 2
+    while n > 1:
+        if n % f == 0:
+            stack.append(f)
+            n //= f
+        else:
+            f += 1
+    return max(stack)
 
 
 if __name__ == "__main__":
-    unittest.main()
-    print(solution())
+    #unittest.main()
+    print(solution(600851475143))

@@ -15,8 +15,9 @@ what is the smallest multiple of the numbers 1-20
 
 given a set of primes and their semiprimes n0 <= i <= n1
 disjoint the set into a set of primes and semiprimes
-get the product of all of the semiprimes
-remove their primes from their set
+get all semiprimes
+remove all semiprimes that are factors of other semiprimes
+remove prime factors of 'multiple semiprimes'
 multiply remaining primes by the product
 
 
@@ -25,41 +26,29 @@ disjoint(sett)
 """
 
 
-def factors(i):
-    s = [1]
+def all_factors(i):
+    s = []
     f = 2
-    while i > 1:
+    while f < i:
         if i % f == 0:
             s.append(f)
-            i //= f
-        else:
-            f += 1
+        f += 1
     return s
 
 
 def solution(nu):
     n0, n1 = nu
-    p, s = set(), {}
-    
-    for i in range(n0, n1):
-        f = factors(i)
-        if len(f) > 2:
-            s[i] = f
+    prodd = 1
+    factors = set(1)
+    for i in range(n0,n1):
+        if i in factors:
+            continue
         else:
-            p.add(i)
-
-    for pr in p:
-        for (se, v) in s:
-            if pr in v:
-                p.remove(pr)
-                break
-    
-        
-
-        
-    return prod(prod(s.keys()), p)
+            prodd *= i
+            
+    return
 
 
 if __name__ == "__main__":
-    unittest.main()
-    print(solution())
+    # unittest.main()
+    print(solution([1, 11]))

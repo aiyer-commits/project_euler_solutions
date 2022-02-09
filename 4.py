@@ -31,13 +31,15 @@ def is_pal(s):
 def solution():
 
     maxx = 1
-
-    for i in range(100, 1000):
-        for j in range(100, 1000):
+    loops_run = 0
+    for i in range(100,1000):
+        for j in range(100,1000):
+            loops_run += 1
             prodd = i*j
             if is_pal(str(prodd)) and prodd > maxx:
                 maxx = prodd
-    
+                break
+    print(loops_run)
     return maxx
 
 

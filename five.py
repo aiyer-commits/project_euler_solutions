@@ -26,29 +26,39 @@ disjoint(sett)
 """
 
 
-def all_factors(i):
-    s = []
+def prime_factors(i):
+    hm = {}
     f = 2
-    while f < i:
+    while i > 1:
         if i % f == 0:
-            s.append(f)
-        f += 1
-    return s
+            if f in hm:
+                hm[f] += 1
+            else:
+                hm[f] = 1
+            i //= f
+        else:
+            f += 1
+    return hm
 
 
 def solution(nu):
     n0, n1 = nu
+    factors = {}
+    for i in range(n0, n1):
+        hm = prime_factors(i)
+        for f in hm.keys():
+            if f in factors.keys():
+                if hm[f] > factors[f]:
+                    factors[f] = hm[f]
+            else:
+                factors[f] = hm[f]
     prodd = 1
-    factors = set(1)
-    for i in range(n0,n1):
-        if i in factors:
-            continue
-        else:
-            prodd *= i
-            
-    return
+    for f in factors.keys():
+        prodd *= f**factors[f]
+    print(factors)
+    return prodd 
 
 
 if __name__ == "__main__":
     # unittest.main()
-    print(solution([1, 11]))
+    print(solution([1, 21]))

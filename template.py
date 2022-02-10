@@ -23,5 +23,5 @@ class TestCase(unittest.TestCase):
 
 
 if __name__ == "__main__":
+    # print(solution())
     unittest.main()
-    print(solution())

@@ -3,7 +3,7 @@ import unittest
 
 class TestCase(unittest.TestCase):
     def test_all(self):
-        cases = []
+        cases = [(1, 1), (2, 2), (4, 5)]
         for case, outcome in cases:
             self.assertEqual(solution(case), outcome)
         return
@@ -12,7 +12,7 @@ class TestCase(unittest.TestCase):
 """ pseudocode
 
 
-f = [2]
+f = [1,2]
 
 is_prime(m)
 s = []
@@ -28,18 +28,51 @@ else: return True
 
 
 get_prime(n):
-for q in range(n+1):
-if is_prime(q)
+if n == 0 return n
+if n < len(f):
+return f[n-1]
+
+q = f[-1]
+while len(f) < n:
+if is_prime(q) 
 f.append(q)
 
-return f[-1]
+return f[n-1]
 
 """
 
+f = [1, 2]
 
-def solution():
 
-    return
+def is_prime(m):
+    o = 1
+    while o < len(f) and m != f[0]:
+        if m % f[o] == 0:
+            return False
+        else:
+            o += 1
+
+    return True
+
+
+def get_prime(n):
+    if n == 0:
+        return 0
+    if n < len(f):
+        return f[n - 1]
+
+    q = f[-1]
+    while len(f) < n:
+        if is_prime(q):
+            f.append(q)
+        else:
+            q += 1
+
+    return f[n - 1]
+
+
+def solution(n):
+    return get_prime(n)
 
 
 if __name__ == "__main__":

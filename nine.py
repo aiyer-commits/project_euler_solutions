@@ -1,46 +1,61 @@
 import unittest
 
 """ approach
-a**2 +  b**2  + 0 = c**2
-a + b - 1000 = c
-
-a**2 + b**2 = (a + b - 1000)**2
-a**2 + b**2 = a**2 + ab - 1000a + ba + b**2 - 1000b + 1000a + 1000b + 1000**2
-a**2 + b**2 = a**2 + 2ab + b**2 + 1000**2
-0 = 2ab + 1000**2
--1000**2 / 2 = ab
--500000 = ab5
-a = -500000/b
-
--500000/b + b - 1000 = c
--500000b**2/b - 1000 = c
-b = (c + 1000)/-500000
-
--500000 * (-500000b^2/b - 1000) = abc
-(50000**2)(b**2)/b + 500000000 = abc
-
-
-
+search for values of a,b,c that satisfy the three constraints
 """
 
 """ pseudocode
+n = 12
+a_b = 2
+max_ab = n - a_b
+while a_b < max_ab
+c = n - a_b
+a = a_b // 2
+b = a_b - a
+if b != a and a^2 + b^2 == c^2 
+return a*b*c
+a_b += 1
+
+return -1
+
 
 """
 
 
-def solution():
+def is_pythag_trip(a, b, c):
+    return a ** 2 + b ** 2 == c ** 2
 
-    return
+
+def solution(n):
+
+    a_b = 2
+    max_ab = n - a_b
+
+    while a_b < max_ab:
+        c = n - a_b
+        a = a_b // 2
+        b = a_b - a
+        if b == a:
+            while a > 2:
+                a -= 1
+                b += 1
+                if is_pythag_trip(a, b, c):
+                    return a * b * c
+        elif is_pythag_trip(a, b, c):
+            return a * b * c
+        a_b += 1
+
+    return -1
 
 
 class TestCase(unittest.TestCase):
     def test_all(self):
-        cases = []
+        cases = [(12, 60)]
         for case, outcome in cases:
             self.assertEqual(solution(case), outcome)
         return
 
 
 if __name__ == "__main__":
-    # print(solution())
+    print(solution(1000))
     unittest.main()

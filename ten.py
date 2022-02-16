@@ -1,26 +1,8 @@
 import unittest
-
+from math import sqrt
 """ approach
-generate the primes less than n, and sum them
-p = [2,3,5,7,11,13]
-is_prime(m)
-for prime in p:
-if n mod p == 0:
-return False
-
-return True
-
-get_primes_lt(n):
-for i in range(n)
-if is_prime(i)
-p.append(i)
-else
-continue
-
-solution(n)
-get_primes(n)
-return sum(p)
-
+sieve of eratosthenes
+ 
 """
 
 """ pseudocode
@@ -28,25 +10,16 @@ return sum(p)
 """
 
 
-def is_prime(m):
-    for p in primes:
-        if m % p == 0:
-            return False
-    return True
-
-
-def primes_lt(n):
-    for i in range(14, n):
-        if is_prime(i):
-            primes.append(i)
-
-
-primes = [2, 3, 5, 7, 11, 13]
-
-
 def solution(n):
-    assert(n > 13)
-    primes_lt(n)
+    primes = set(range(2, n))
+    for i in range(2, int(sqrt(n))):
+        if i in primes:
+            j = i**2
+            while j < n:
+                if j in primes:
+                    primes.remove(j)
+                j += i
+
     return sum(primes)
 
 

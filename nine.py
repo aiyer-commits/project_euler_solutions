@@ -68,5 +68,5 @@ class TestCase(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    print(solution(1000))
+    print(solution(10000))
     unittest.main()

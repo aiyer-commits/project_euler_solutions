@@ -1,29 +1,15 @@
 import unittest
+from math import prod
 
 """ approach
+generate a number x with 500 factors using prime decomposition 
+check if x is a triangle number, by seeing if a positive integer root exists for the equation:
+n^2 + n - 2x = 0
+using:
+n = (-1 +- sqrt(1 + 8x))/2
 
-def factors(n)
-d = 2
-f = [1]
-while n > 1:
- if n % d == 0:
- n //= d
- f.append(d)
-d += 1
-return f
-
-solution(n):
-
-num_factors = 0
-triangle_number = 0
-i = 1
-
-while num_factors < n
-triangle_number += i
-i += 1
-num_factors = len(factors(triangle_number))
-
-return triangle_number
+if no integer can be found for n ... then round?, this guarantees a triangle number...
+trial division can be used to count the number of factors...
 
 """
 
@@ -32,29 +18,27 @@ return triangle_number
 """
 
 
-def factors(n):
-    d = 2
-    f = set([1])
-    while d <= n:
-        if n % d == 0:
-            f.add(d)
-        d += 1
-    return f
+def number_of_factors(n):
+    f = 2
+    factors = {}
+    while n > 1:
+        if n % f == 0:
+            factors[f] = factors[f] + 1 if f in factors else 2
+            n //= f
+        else:
+            f += 1
+    return prod(factors.values())
+
+
+def triangle_number(m):
+    return m * (m + 1) / 2
 
 
 def solution(n):
-    num_factors = 0
-    triangle_number = 0
-    i = 1
-    max_num_factors = 0
-    while num_factors < n:
-        triangle_number += i
-        i += 1
-        num_factors = len(factors(triangle_number))
-        if num_factors > max_num_factors:
-            max_num_factors = num_factors
-            print(triangle_number, i, num_factors)
-    return triangle_number
+    m = 1
+    while number_of_factors(triangle_number(m)) < n:
+        m += 1
+    return triangle_number(m)
 
 
 class TestCase(unittest.TestCase):

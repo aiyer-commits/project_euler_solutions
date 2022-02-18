@@ -1,71 +1,36 @@
 import unittest
 
 """ approach
-generate grid, start 0,0, target n-1,n-1
-bfs, increment valid paths count when point = target
-  
+fill a grid with path counts starting from 
+1x1 up to n+1 x n+1   
 """
 
 """ pseudocode
-n <- grid size
-
-def in_bounds(p):
-x,y = p
-return 0 < x < n and 0 < y < n
-
-def translate(p,t)
-x,y = p
-tx,ty = t
-return (x + tx, y + ty)
-
-translations = [(0,1),(1,0)]
-
-valid_paths = 0
-
-stack = [(0,0)]
-while stack:
-point = stack.pop()
-if point == (n-1,n-1):
-valid_paths += 1
-continue
-stack.extend([translate(point,t) for t in translations if in_bounds(translate(point,t))])
-
-
-
-
+given n >= 1
+start at 1
+make a grid n+1 x n+1, fill the boundary with 1s
+go column by column, filling each space with
+the sum of the value below and to the right.
 
 """
 
 
 def solution(n):
-    def in_bounds(p):
-        x, y = p
-        return 0 <= x <= n and 0 <= y <= n
-
-    def translate(p, t):
-        x, y = p
-        tx, ty = t
-        return (x + tx, y + ty)
-
-    valid_paths = 0
-    translations = [(0, 1), (1, 0)]
-
-    stack = [(0, 0)]
-
-    while stack:
-        point = stack.pop()
-        if point == (n, n):
-            valid_paths += 1
-            continue
-        stack.extend(
-            [
-                translate(point, t)
-                for t in translations
-                if in_bounds(translate(point, t))
-            ]
-        )
-
-    return valid_paths
+    grid = [([0]*n) + [1] for i in range(n)]
+    grid.append([1]*(n+1))
+    p = (n-1, n-1)
+    
+    while p != (0, 0):
+        r, c = p
+        
+        grid[r][c] = grid[r+1][c] + grid[r][c+1]
+        if c - 1 >= 0:
+            p = (r, c-1)
+        else:
+            p = (r-1, n-1)
+        
+    grid[0][0] = grid[0][1] + grid[1][0]
+    return grid[0][0]
 
 
 class TestCase(unittest.TestCase):
@@ -77,5 +42,5 @@ class TestCase(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    solution(20)
+    print(solution(20))
     unittest.main()

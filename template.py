@@ -1,13 +1,5 @@
 import unittest
 
-""" approach
-
-"""
-
-""" pseudocode
-
-"""
-
 
 def solution():
 
@@ -25,3 +17,12 @@ class TestCase(unittest.TestCase):
 if __name__ == "__main__":
     # print(solution())
     unittest.main()
+
+
+""" approach
+
+"""
+
+""" pseudocode
+
+"""

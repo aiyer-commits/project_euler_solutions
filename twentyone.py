@@ -77,7 +77,7 @@ def proper_divisors(i):
     f = 2
     divisors = [1]
     while f < i:
-        if i % f == 0:
+        if i % of == 0:
             divisors.append(f)
         f += 1
 

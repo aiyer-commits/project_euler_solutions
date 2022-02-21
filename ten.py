@@ -10,6 +10,8 @@ sieve of eratosthenes
 """
 
 
+# there's a bug in this sieve somewhere...
+
 def solution(n):
     primes = set(range(2, n))
     for i in range(2, int(sqrt(n))):

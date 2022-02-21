@@ -1,12 +1,12 @@
 import unittest
 
 
-alphabet = list('abcdefghijklmnopqrstuvwxyz')
+alphabet = list("abcdefghijklmnopqrstuvwxyz")
 alphahash = {c: i for i, c in enumerate(alphabet, 1)}
 
 
 def name_score(s):
-    s = s.strip('\"')
+    s = s.strip('"')
     score = 0
     for c in s:
         # score += alphabet.index(c) + 1 # could be sped up with a hashmap
@@ -16,25 +16,25 @@ def name_score(s):
 
 
 def solution(file):
-    names = sorted(open(file).read().split(','))
+    names = sorted(open(file).read().split(","))
     total = 0
     for index, name in enumerate(names, 1):
-        #print(index, name_score(name))
+        # print(index, name_score(name))
         total += index * name_score(name)
-    
+
     return total
 
 
 class TestCase(unittest.TestCase):
     def test_all(self):
-        cases = [('./arjun.txt', 3*(1+18+10+21+14))]
+        cases = [("./arjun.txt", 3 * (1 + 18 + 10 + 21 + 14))]
         for case, outcome in cases:
             self.assertEqual(solution(case), outcome)
         return
 
 
 if __name__ == "__main__":
-    print(solution('./p022_names.txt'))
+    print(solution("./p022_names.txt"))
     unittest.main()
 
 

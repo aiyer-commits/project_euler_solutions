@@ -17,8 +17,8 @@ def solution(case):
 
         if n == 1:
             indices.append(str(items_list.pop()))
-
             break
+        
         while current_index + item_index * factorial(n - 1) >= lex_index:
             item_index -= 1
         current_index += item_index * factorial(n - 1)

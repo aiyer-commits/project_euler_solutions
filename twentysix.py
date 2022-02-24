@@ -1,31 +1,66 @@
 import unittest
 
 
-def uni_frac(d):
-    n = 1
-    q = []
-    while n != 0 and len(q) < d - 1:
-        if n // d == 0:
-            n *= 10
+def ld(n, d):
+    return n // d, n % d
+
+
+def digits(num):
+    base = 1000
+    d = []
+    if num < 10:
+        return [num]
+    while base > 0:
+        if num % base == num:
+            base //= 10
             continue
-        q.append(n // d)
-        if n // d == 0:
-            n *= 10
-        n = n % d
-    return q
+        if base == 1:
+            d.insert(0, num)
+        else:
+            d.insert(0, num % base)
+        num //= base
+        base //= 10
+
+    return d
+
+# assuming no irrational numbers i guess....
 
 
-def solution(n):
-    deno = 2
-    longest = 1
-    for d in range(2, n+1):
-        deci_frac = uni_frac(d)
-        len_d = len(deci_frac)
-        if len_d > longest:
-            longest = len_d
-            deno = d
-            print(deno, deci_frac)
-    return deno
+def unit_frac(deno):
+    slow_numera = 10
+    fast_numera = 100
+    slow_decifrac = []
+    fast_decifrac = []
+    cyclic = False
+    while not cyclic:
+        slow_quo, slow_rem = ld(slow_numera, deno)
+        slow_numera = slow_rem*10
+        slow_decifrac.extend(digits(slow_quo))
+
+        fast_quo, fast_rem = ld(fast_numera, deno)
+        fast_numera = fast_rem*100
+        fast_decifrac.extend(digits(fast_quo))
+        if fast_decifrac[-1] == slow_decifrac[-1]:
+            cyclic = True
+        if fast_rem == 0:
+            return fast_decifrac
+        if slow_rem == 0:
+            return slow_decifrac
+
+    return slow_decifrac
+
+
+def solution(end):
+    max_len = 0
+    d_max = -1
+    for d in range(2, end):
+        decifrac = unit_frac(d)
+        if len(decifrac) > max_len:
+            max_len = len(decifrac)
+            d_max = d
+            # print(decifrac, d)
+        
+    return d_max
 
 
 class TestCase(unittest.TestCase):
@@ -35,74 +70,106 @@ class TestCase(unittest.TestCase):
             self.assertEqual(solution(case), outcome)
         return
 
+    
+def decifrac(i):
+    return '0.' + ''.join([str(i) for i in unit_frac(i)])
 
+    
 if __name__ == "__main__":
-    # print(solution(999))
+    print(solution(999))
+    print(unit_frac(982))
     unittest.main()
 
 
 """ approach
-generate the fractions and count their decimal parts... but the default float representation may not show the entire cycle....
+get the decimal fraction part of the number 1/d, using a cycle finding algorithm
+count the lengths of the cycles
+return the longest length cycle's corresponding d
 
-if you treat it like manual long division, you can find cycles using modulo...
+but how do you do cycle finding in long division?
+
+1/4
+
+slow pointer
+1 // 4 = 0 .. place decimal here
+multiply 1 by 10..
+10 // 4 = 2, 10 % 4 = 2
+2 * 10
+20 // 4 = 5, 20 % 4 = 0 -> 0.25
+
+fast pointer...
+
+1 // 4 = 0
+multiply by 100
+100 // 4 = 25, 100 % 4 = 0
+stop fast pointer when you hit a 0?
+can stop the entire operation...
+
+ok try for 1/7
+slow pointer...
+1 // 7 = 0, 1 / 7 = 1
+10 // 7 = 1, 10 % 7 = 3
+30 // 7 = 4, 30 % 7 = 2
+20 // 7 = 2, 20 % 7 = 6
+60 // 7 = 8, 60 % 7 = 4
+40 // 7 = 5, 40 % 7 = 5
+50 // 7 = 7, 50 % 7 = 1 <- this is the point where the fast and slow pointer will meet...
+10 // 7 = 1, 10 % 7 = 3 ... this is the cycle that we expect
+
+1 // 7 = 0, 1 % 7 = 1
+100 // 7 = 14, 100 % 7 = 2
+200 // 7 = 28, 200 % 7 = 4
+(57,1)
+(14,2) ... cycle repeats....
 
 
-ex 1/2 ... 1 // 2 == 0 ... 10 // 2 == 5 ... 10 // 5 == 2 ... terminate? .. 0.5 
- 1 // 3 == 0 .... 10 // 3 == 3 ... 10 // 3 == 3 ..... 0.333333 ..
-1 // 4 == 0 .... 10 // 4 == 2 .... 10 // 2 == 5 .... 10 // 5 == 2 ... terminate? 0.25
-1 // 5 == 0 ... 10 // 5 == 2 ... 10 // 2 == 5 ... terminate 0.2
-1 // 6 == 0 ... 10 // 6 == 1 ... 10 // 1 == 10... 10 // 10 == 1 .... terminate ... 0.1101
-
-close... but you have to divide the remainder!!!
-
-1 // 3 == 0, 10 // 3 = 3, 3 // 3 = 1 ...
-
-integer division is wrong, use modulo ?
-
-1 % 3 = 1... ok so don't even deal with the 1 / 3 situation
-10 % 3 == 1 ... 1 % 3 = 1 .... 
- hmmmm
-
-10 // 3  == 3,  3 // 3 == 1 ... 1 // 3 == 0, 10 // 3 == 3, 1 // 3 == 0... repeat forever...
+ok how about 1 / 38?
+ld(10,38) -> 0,10
+ld(100,38) -> 2,24
+ld(240,38) -> 6,12
+ld(120,38) -> 3,6
+ld(60,38) -> 1,22
 
 
-do you need both to make a decision of termination?? both integer division and modulo?? 
-
-10 // 3 and 10 % 3 .. integer dvision tells you the divisor and modulo tells you the remainder... 
-
-anything that terminates or has a cycle is a rational number...
-anything that does not terminate and does not have a cycle is irrational 
-
-ok.. can safely say that a cycle occurs when? 
 
 """
 
 """ pseudocode
-uni_frac(d):
-n = 1
-q = []
-cyclic = False
-while n % d != 0 or not cyclic:
- if n // d == 0:
-  n *= 10
-  continue
- if n // d in q:
-  cyclic = True
- q.append(n // d)
- n = n % d
- 
-return q
+
+ld(n,d): -> (quotient, remainder)
+
+digits(number): -> [digits]
 
 
-solution(n)
-index = 2
-longest = 1
-for i in range(2,n+1)
- len_i = len(uni_frac(i))
- if len_i > longest:
-   longest = len_i
-   index = i
+unit_frac(deno):
+ slow_numero = 10
+ fast_numero = 100
+ slow_decifrac = []
+ fast_decifrac = []
+ cyclic = False
+ while not cyclic:
+  slow_quotient, slow_remainder = ld(slow_numero, deno)
+  slow_numero = slow_remainder*10
+  slow_decifrac.extend(digits(slow_quotient))
+  
+  fast_quotient, fast_remainder = ld(fast_numero, demo)
+  fast_numero = fast_remainder*100
+  fast_decifrac.extend(digits(fast_quotient))
+  
+  if fast_decifrac[-1] == slow_decifrac[-1]: cyclic = True
+  if fast_remainder == 0: return fast_decifrac
+  if slow_remainder == 0: return slow_decifrac
 
-return index
+
+solution(range_end):
+ max_len = 0
+ d_max = -1
+ for d in range(2,range_end):
+  decifrac = unit_frac(d)
+  if len(decifrac) > max_len:
+   max_len = len(decifrac)
+   d_max = d
+ return d_max
+
 
 """

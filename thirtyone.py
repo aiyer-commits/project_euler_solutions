@@ -24,7 +24,7 @@ class TestCase(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    # print(solution(200))
+    print(solution((200, (1, 2, 5, 10, 20, 50, 100, 200))))
     unittest.main()
 
 

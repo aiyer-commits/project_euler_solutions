@@ -25,7 +25,6 @@ def solution():
     return_value = 0
     digits = list(range(1, 10))
     tested_prods = set()
-    print(digits)
     for i_fdp, fdp in enumerate(digits):
         ps_digits = [d for d in digits if d != fdp]
         for i_sdp, sdp in enumerate(ps_digits):
@@ -43,14 +42,13 @@ def solution():
                             
                             multiplier = product // single_dig_mult
                             multiplier_digs = digs(multiplier)
-                            # print(multiplier, single_dig_mult, product)
+                            
                             overlap_digs = [d for d in multiplier_digs if d in prod_digs or d == single_dig_mult]
                             all_digs = set().union(*[prod_digs, multiplier_digs])
                             all_digs.add(single_dig_mult)
-                            print(all_digs)
+                        
                             if len(overlap_digs) == 0 and unique_digs(multiplier) and product not in tested_prods and all_digs == set(digits):
                                 tested_prods.add(product)
-                                print(multiplier, single_dig_mult, product)
                                 return_value += product
                     for i_fdm, fdm in enumerate(rem_digs):
                         psdm_digits = [d for d in rem_digs if d != fdm]
@@ -64,7 +62,6 @@ def solution():
                                 all_digs = set().union(*[prod_digs, multi_digs, multiplier_digs])
                                 if len(overlap_digs) == 0 and unique_digs(multiplier) and product not in tested_prods and all_digs == set(digits):
                                     tested_prods.add(product)
-                                    print(multiplier, multiplicand, product)
                                     return_value += product
                                 
     return return_value

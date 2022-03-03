@@ -3,9 +3,7 @@ import unittest
 
 def is_pal(st):
     s = list(st)
-    while(s):
-        if len(s) == 1:
-            return True
+    while len(s) > 1:
         if s[0] == s[-1]:
             s.pop()
             s.pop(0)

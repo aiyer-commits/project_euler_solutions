@@ -26,9 +26,9 @@ def sieve_of_eratosthenes(n):
 
 def solution(n):
     lp = largest_pandigital(n)
-    print(lp)
+    # print(lp)
     primes = sieve_of_eratosthenes(lp)
-    print(len(primes))
+    # print(len(primes))
     while primes:
         p = primes.pop()
         if is_pandigital(p, n):
@@ -45,7 +45,10 @@ class TestCase(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    # print(solution(9))
+    print(solution(5))
+    print(solution(6))
+    print(solution(7))
+    print(solution(8))
     unittest.main()
 
 
